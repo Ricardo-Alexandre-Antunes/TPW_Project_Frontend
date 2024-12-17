@@ -1,4 +1,10 @@
 /* Card Styling */
+
+
+.product-item{
+    margin-top: 25px;
+    margin-inline: 15px;
+  }
 .product-card {
     margin: 0; /* Remove unnecessary margins */
     width: 240px;
