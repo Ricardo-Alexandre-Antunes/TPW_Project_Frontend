@@ -13,9 +13,10 @@ export class OffersService {
     private offersSubject = new BehaviorSubject<Offer[][] | null>(null);
     currentOffers$ = this.offersSubject.asObservable();
     userService: UserService = inject(UserService);
+    baseUrl: string = 'https://rantunes038.pythonanywhere.com/ws/';
 
   async submitOffer(offer: Offer, token: string): Promise<Offer[][] | null> {
-    const url = 'http://localhost:8080/ws/offers/';
+    const url = `${this.baseUrl}offers/`;
     const data = await fetch(url, {
       method: 'POST',
       headers: new Headers({'Content-Type': 'application/json', 'Authorization': `Token ${token}`}),
@@ -38,13 +39,13 @@ export class OffersService {
   }
 
   async getOffers(): Promise<any[]> {
-    const url = 'http://localhost:8080/ws/offers/';
+    const url = `${this.baseUrl}offers/`;
     const response: Response = await fetch(url);
     return await response.json();
   }
 
   async getOffersByUser(user_id: number, token: string): Promise<Offer[][] | null> {
-    const url = `http://localhost:8080/ws/offers/?user_id=${user_id}`;
+    const url = `${this.baseUrl}offers/?user_id=${user_id}`;
     const response: Response = await fetch(url, {
       headers: {
         'Authorization': `Token ${token}`,
@@ -62,7 +63,7 @@ export class OffersService {
   }
 
   async updateOffer(offer: Offer, action: string, token:string): Promise<Offer[][] | null> {
-    const url = 'http://localhost:8080/ws/offers/';
+    const url = `${this.baseUrl}offers/`;
     const data = await fetch(url, {
       method: 'PUT',
       headers: new Headers({'Content-Type': 'application/json', 'Authorization': `Token ${token}`}),
@@ -85,7 +86,7 @@ export class OffersService {
   }
 
   async getOffer(offer_id: number, token:string): Promise<any> {
-    const url = `http://localhost:8080/ws/offers/${offer_id}/`;
+    const url = `${this.baseUrl}offers/${offer_id}/`;
     const response: Response = await fetch(url, {
       headers: {
         'Authorization': `Token ${token}`,
@@ -94,7 +95,13 @@ export class OffersService {
     return await response.json();
   }
 
-
-
+  async getNotifs(): Promise<number> {
+      const url: string = `${this.baseUrl}users/notifs/`;
+      const data: Response = await fetch(url, {
+        headers: { Authorization: `Token ${localStorage.getItem('token')}` },
+      });
+      const response = await data.json();
+      return response.offer_count;
+    }
 
 }

@@ -7,7 +7,7 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root',
 })
 export class LoginService {
-  private baseUrl: string = 'http://localhost:8080/ws/';
+  private baseUrl: string = 'https://rantunes038.pythonanywhere.com/ws/';
   userService: UserService = inject(UserService);
   banned: boolean = true;
   private currentUser = new BehaviorSubject<UserProfile | null>(null);
@@ -16,15 +16,6 @@ export class LoginService {
 
 
   constructor() {}
-
-    async getNotifs(): Promise<number> {
-      const url: string = this.baseUrl + 'users/notifs/';
-      const data: Response = await fetch(url, {
-        headers: { Authorization: `Token ${localStorage.getItem('token')}` },
-      });
-      const response = await data.json();
-      return response.offer_count;
-    }
 
     async getLoggedUser(): Promise<UserProfile> {
       const userId = localStorage.getItem('id');
@@ -36,15 +27,10 @@ export class LoginService {
     }
 
   private setCurrentUser(user: UserProfile | null): void {
-    console.log('Setting current user:', user);
     if (user) {
       localStorage.setItem('id', JSON.stringify(user?.id));
     }
     this.currentUser.next(user);
-  }
-
-  private setBanned(banned: boolean): void {
-    this.banned = banned;
   }
 
   async login(username: string, password: string): Promise<UserProfile | boolean | null> {

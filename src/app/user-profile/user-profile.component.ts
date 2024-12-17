@@ -16,6 +16,7 @@ import { ModeratorService } from '../moderator.service';
 import { ReportListComponent } from '../report-list/report-list.component';
 import { ReportModalComponent } from '../report-modal/report-modal.component';
 import { Subscription } from 'rxjs';
+import { ReportService } from '../report.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -67,6 +68,7 @@ export class UserProfileComponent {
   followService: FollowerInfoService = inject(FollowerInfoService);
   loginService: LoginService = inject(LoginService);
   moderatorService: ModeratorService = inject(ModeratorService);
+  reportService: ReportService = inject(ReportService);
 
   constructor(private route: ActivatedRoute) { 
     this.routeSubscription = this.router.params.subscribe(params => {
@@ -99,19 +101,15 @@ export class UserProfileComponent {
     try {
       // Load logged-in user
       this.loadLoggedUser();
-      console.log("loaded user")
       // Check if the user is a moderator
       if (this.logged_in && this.log_user) {
-        console.log("logged in")
         this.moderator = await this.userService.checkModerator(this.log_user.user.username);
-        console.log("Moderator status:", this.moderator);
-  
         if (this.moderator) {
           console.log("Loading reports...");
           if (this.isBrowser()) {
             this.token = localStorage.getItem("token");
             if (this.token) {
-              const fetchedReports = await this.moderatorService.getUReports(this.username, this.token);
+              const fetchedReports = await this.reportService.getUReports(this.username, this.token);
               this.reports = fetchedReports;
             }
           } else {
@@ -130,10 +128,7 @@ export class UserProfileComponent {
   
         // Fetch user products
         const fetchedProducts = await this.productService.getProductsByUsername(this.username);
-        console.log("this be products:", fetchedProducts)
         this.products = fetchedProducts;
-        console.log("DIDN'T GO PAST HERE!")
-        console.log("this be products:", this.products)
         this.pnumber = fetchedProducts.length;
   
         // Additional checks for logged-in user
@@ -147,8 +142,7 @@ export class UserProfileComponent {
             if (this.isBrowser()) {
               this.token = localStorage.getItem("token");
               if(this.token){
-                console.log("USERNAME RAG",this.username)
-                const fetchedReports = await this.moderatorService.getUReports(this.username,this.token);
+                const fetchedReports = await this.reportService.getUReports(this.username,this.token);
                 this.reports = fetchedReports;
               }
             }

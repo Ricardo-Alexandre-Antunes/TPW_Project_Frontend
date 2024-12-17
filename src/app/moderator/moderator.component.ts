@@ -8,6 +8,7 @@ import { LoginService } from '../login.service';
 import { UserService } from '../user.service';
 import { Router } from '@angular/router';
 import { UserProfile } from '../user-profile';
+import { ReportService } from '../report.service';
 
 
 @Component({
@@ -26,6 +27,7 @@ export class ModeratorComponent {
   moderatorService: ModeratorService = inject(ModeratorService);
   loginService: LoginService = inject(LoginService);
   userService: UserService = inject(UserService);
+  reportService: ReportService = inject(ReportService);
 
   constructor (private router: Router){}
 
@@ -54,7 +56,6 @@ export class ModeratorComponent {
                   console.error('Error fetching logged user:', error);
                   this.router.navigate(['/']); // Redirect to authentication page
                 });
-                console.log("USER ATUAL", user);
               }
             })
             .catch(error => {
@@ -77,14 +78,12 @@ export class ModeratorComponent {
   async reports(): Promise<void> {
     await this.loadUserReports();
     await this.loadProductReports();
-    console.log(this.product_reports);
-    console.log(this.user_reports)
   }
 
   async loadUserReports(): Promise<void> {
     try {
       if (this.token){
-        const u_report = await this.moderatorService.getUserReports(this.token);
+        const u_report = await this.reportService.getUserReports(this.token);
         this.user_reports = u_report
       }
     } catch (error) {
@@ -95,7 +94,7 @@ export class ModeratorComponent {
   async loadProductReports(): Promise<void> {
     try {
       if (this.token){
-        const p_report = await this.moderatorService.getProductReports(this.token);
+        const p_report = await this.reportService.getProductReports(this.token);
         this.product_reports = p_report
       }
     } catch (error) {
@@ -141,7 +140,7 @@ export class ModeratorComponent {
   
   async closeReport(reportId: number, user: boolean): Promise<void> {
     try {
-      await this.moderatorService.closeReport(reportId, this.token!);
+      await this.reportService.closeReport(reportId, this.token!);
       console.log(`Report ${reportId} closed successfully.`);
       if (user){
         this.user_reports = this.user_reports.filter(report => report.report.id !== reportId);

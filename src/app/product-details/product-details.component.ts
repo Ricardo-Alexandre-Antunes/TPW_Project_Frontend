@@ -15,6 +15,7 @@ import { OfferModalComponent } from '../offer-modal/offer-modal.component';
 import { Offer } from '../offer';
 import { OffersService } from '../offers.service';
 import { Subscription } from 'rxjs';
+import { ReportService } from '../report.service';
 
 @Component({
   selector: 'app-product-details',
@@ -48,6 +49,7 @@ export class ProductDetailsComponent implements OnInit {
   private userService: UserService = inject(UserService);
   private loginService: LoginService = inject(LoginService);
   private moderatorService: ModeratorService = inject(ModeratorService);
+  private reportService: ReportService = inject(ReportService);
 
   private currentNegotiations: Offer[] = [];
 
@@ -94,7 +96,6 @@ export class ProductDetailsComponent implements OnInit {
 
   getOfferAction(): () => void {
     if (!this.token) return this.redirectToLogin;
-    if (this.product?.seller.id === this.log_user?.user.id) return this.removeProduct;
     if (this.currentNegotiations.some(offer => offer.product.id === this.product?.id)) return this.redirectToOffers;
     if (this.product?.seller.id === this.log_user?.user.id) return this.removeProduct;
     return this.showOfferModal;
@@ -109,9 +110,6 @@ export class ProductDetailsComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     console.log("Product detail")
-    console.log(this.offerService)
-    console.log(this.userService)
-    console.log(this.loginService)
     this.offerSubscription = this.offerService.currentOffers$.subscribe((value) => {
       console.log('Offer value changed:', value);
       this.currentNegotiations = value![0].concat(value![1]).concat(value![2]);
@@ -127,20 +125,17 @@ export class ProductDetailsComponent implements OnInit {
       const user = await this.loginService.getLoggedUser();
       this.log_user = user;
       this.moderator = await this.userService.checkModerator(user.user.username);
-      console.log("moderator1",this.moderator)
       if (this.moderator){
-        console.log("entrei")
         if (this.isBrowser()) {
           this.token = localStorage.getItem("token");
           if(this.token){
-            const fetchedReports = await this.moderatorService.getPReports(this.productId,this.token);
+            const fetchedReports = await this.reportService.getPReports(this.productId,this.token);
             this.reports = fetchedReports;
           }
         }
         else{
           console.warn("localStorage não está disponível no ambiente atual.");
         }
-        console.log("Reports",this.reports)
       }
       // If the product has a seller, fetch seller info
     } catch (error) {
@@ -153,18 +148,16 @@ export class ProductDetailsComponent implements OnInit {
 
   async fetchReports(): Promise<void> {
     if (this.moderator){
-      console.log("entrei")
       if (this.isBrowser()) {
         this.token = localStorage.getItem("token");
         if(this.token){
-          const fetchedReports = await this.moderatorService.getPReports(this.productId,this.token);
+          const fetchedReports = await this.reportService.getPReports(this.productId,this.token);
           this.reports = fetchedReports;
         }
       }
       else{
         console.warn("localStorage não está disponível no ambiente atual.");
       }
-      console.log("Reports",this.reports)
     }
   }
 

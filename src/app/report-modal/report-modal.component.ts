@@ -5,6 +5,7 @@ import { LoginService } from '../login.service';
 import { log } from 'console';
 import { CommonModule } from '@angular/common';
 import { UserProfile } from '../user-profile';
+import { ReportService } from '../report.service';
 
 @Component({
   selector: 'app-report-modal',
@@ -38,7 +39,7 @@ export class ReportModalComponent {
   loginService: LoginService = inject(LoginService);
 
 
-  constructor(private reportService: ModeratorService) {}
+  constructor(private reportService: ReportService) {}
 
   ngOnInit(): void {
     if (this.isBrowser()){
@@ -53,13 +54,8 @@ export class ReportModalComponent {
     if (log_user){
       this.currentUser = log_user
       this.report.sent_by = this.currentUser
-      console.log("ele fez isto")
     }
-    console.log(this.user);
-    console.log(this.token);
     if (this.user && this.token) {
-      console.log("TOU AQUI")
-      console.log(this.target)
       this.report.reporting = this.target as UserProfile; // Assign user to be reported
     } else {
       this.report.product = this.target; // Assign product to be reported

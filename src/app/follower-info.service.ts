@@ -6,7 +6,7 @@ import { User } from './user';
   providedIn: 'root'
 })
 export class FollowerInfoService {
-  private baseUrl :string = 'http://localhost:8080/ws/';
+  private baseUrl :string = 'https://rantunes038.pythonanywhere.com/ws/';
   constructor() { }
 
   async getFollowers(userId: number): Promise<User[]> {
