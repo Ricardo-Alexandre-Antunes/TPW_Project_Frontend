@@ -1,0 +1,11 @@
+<div class="navbar-right">
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="accountDropdown" 
+        data-bs-toggle="dropdown" aria-expanded="false" title="Minha conta">{{ username }}</button>
+        <div class="dropdown-menu" aria-labelledby="accountDropdown">
+                        <a class="dropdown-item" [routerLink]="['/profile', username]">Perfil</a>
+                        <a class="dropdown-item" routerLink="/account">Definições</a>
+                        <a class="dropdown-item" (click)="logout()">Logout</a>
+        </div>
+    </div>
+</div>

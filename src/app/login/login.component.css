@@ -1,0 +1,35 @@
+/* Scope all styles under the login-container class */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .login-container .login-card {
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff; /* Visible background */
+    width: 100%;
+    padding: 20px;
+  }
+  
+  .login-container .btn-primary {
+    background-color: #007bff;
+    border: none;
+  }
+  
+  .login-container .btn-primary:hover {
+    background-color: #0056b3;
+  }
+  
+  .login-container .link-primary {
+    text-decoration: none;
+    color: #007bff;
+  }
+  
+  .login-container .link-primary:hover {
+    color: #0056b3;
+    text-decoration: underline;
+  }
+  

@@ -1,0 +1,12 @@
+/* Container for the Product List */
+.product-list {
+  display: flex;
+  flex-wrap: wrap;  /* Allow wrapping of items */
+  justify-content: center;  /* Center items horizontally */
+  margin-top: 20px;  /* Space above the product list */
+}
+
+.product-item{
+  margin-top: 25px;
+  margin-inline: 15px;
+}

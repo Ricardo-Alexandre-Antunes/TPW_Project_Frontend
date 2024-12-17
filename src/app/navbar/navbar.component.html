@@ -1,0 +1,41 @@
+<nav class="navbar">
+    <div class="navbar-left">
+        <a routerLink="/products" routerLinkActive="active">
+            <img src="http://127.0.0.1:8080/static/images/Amor_camisola.png" alt="Logo" class="logo-image">
+            <span class="company-name">Amor à Camisola</span>
+        </a>
+        <a routerLink="/sell" routerLinkActive="active">
+            Vender Produto
+        </a>
+        <a *ngIf="moderator" routerLink="/moderator" routerLinkActive="active">
+            Denúncias
+        </a>
+        <!--<a routerLink="/sellproduct" routerLinkActive="active">Vender Produto</a>-->
+        <!--<a href="{% url 'moderator_dashboard' %}">Denúncias</a>    A tratar -->
+    </div>
+    <div class="navbar-right">
+        <a routerLink="/users" routerLinkActive="active"><i class="fa-solid fa-users"></i></a>
+        <div *ngIf="log_user">
+            <a routerLink="/offers" routerLinkActive="active" class="notification-icon" style="position: relative;">
+                <i class="fa-regular fa-comments mx-3" style="color: #ffffff; cursor: pointer;" data-toggle="tooltip" title="Ofertas"></i>
+                <span *ngIf="(offerCount | async)! > 0" class="notification-bubble">{{(offerCount | async)!}}</span>
+            </a>
+            <a routerLink="/wallet" routerLinkActive="active">
+                <i class="fas fa-wallet"></i>{{ wallet | number:'1.2-2' }}€
+            </a>
+            <a routerLink="/favorites" routerLinkActive="active">
+                <i class="fas fa-heart"></i>
+                <!--{{ profile.wallet }}-->
+            </a>
+        </div>
+        <div *ngIf="logged_in"><app-navbar-login [username]="username" (logoutEvent)="logout()"></app-navbar-login></div>
+        
+        <div *ngIf="!logged_in">
+            <a routerLink="/authentication" routerLinkActive="active">Login</a>
+        </div>
+        <!--<a href="{% url 'offers' %}" class="notification-icon" style="position: relative;"></a>    A tratar -->
+        <!--<a routerLink="/wallet" routerLinkActive="active"><i class="fas fa-wallet"></i>{{ profile.wallet }}€</a>-->
+        <!--<a routerLink="/favorite_list" routerLinkActive="active"><i class="fas fa-heart"></i></a>-->
+    </div>
+  </nav>
+  

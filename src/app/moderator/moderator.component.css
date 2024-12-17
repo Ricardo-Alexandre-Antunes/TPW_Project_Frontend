@@ -1,0 +1,65 @@
+/* Container */
+.report-item {
+  background-color: #fff;
+  border: 1px solid #e3e3e3;
+  border-radius: 8px;
+}
+
+/* Image */
+.report-image img {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+}
+
+/* Info Section */
+.report-info h5 {
+  margin-bottom: 0.25rem;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.report-info p {
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+/* Action Buttons */
+.report-actions .btn {
+  min-width: 120px;
+  text-align: center;
+}
+
+.btn-warning {
+  background-color: #ffc107;
+  color: #000;
+  border: none;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  color: #fff;
+  border: none;
+}
+
+.btn-warning:hover,
+.btn-danger:hover {
+  opacity: 0.9;
+}
+
+/* General Adjustments */
+.shadow-sm {
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.me-3 {
+  margin-right: 1rem !important;
+}
+
+.ms-auto {
+  margin-left: auto !important;
+}
+
+.rounded-circle {
+  border-radius: 50%;
+}

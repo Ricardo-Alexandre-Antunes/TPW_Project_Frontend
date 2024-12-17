@@ -1,0 +1,132 @@
+<div class="container mt-5">
+    <div class="row mb-4">
+        <div class="col-md-4 text-center">
+            <img [src]="'http://127.0.0.1:8080' + userprofile.image"
+             style="width: 10vw; height: 9vw; object-fit: cover"
+             class="rounded-circle" alt="">
+        </div>
+        <div class="col-md-8">
+    <div class="d-flex align-items-center mb-3">
+        <h2 class="mr-3">{{ userprofile.user.username }}</h2>
+        <div *ngIf="logged_in && userprofile.user.is_active" class="d-flex"> <div *ngIf="!myprofile">
+                <button class="btn btn-outline-primary btn-sm" (click)="isFollowing ? unfollowUser() : followUser()">
+                    {{ isFollowing ? 'Não Seguir' : 'Seguir' }}
+                </button>
+            </div>
+            <div *ngIf="userprofile.user.is_active && !myprofile" class="ml-2"> <button type="button" class="btn btn-outline-danger btn-sm" 
+                        data-bs-toggle="modal" 
+                        data-bs-target="#reportModal">
+                    Reportar Utilizador
+                </button>
+            </div>
+        </div>
+    </div>
+            <div class="d-flex mb-3">
+                <div class="mr-4">
+                    <strong>{{ pnumber }}</strong> produtos
+                </div>
+                
+                <div class="mr-4">
+                  <a href="#" 
+                     class="text-dark" 
+                     [attr.data-bs-toggle]="myprofile ? 'modal' : null" 
+                     [attr.data-bs-target]="myprofile ? '#followersModal' : null"
+                     (click)="myprofile ? null : $event.preventDefault()">
+                    <strong>{{ followers_number }}</strong> seguidores
+                  </a>
+                </div>
+                <div>
+                  <a href="#" 
+                     class="text-dark" 
+                     [attr.data-bs-toggle]="myprofile ? 'modal' : null" 
+                     [attr.data-bs-target]="myprofile ? '#followingModal' : null"
+                     (click)="myprofile ? null : $event.preventDefault()">
+                    <strong>{{ following_number }}</strong> seguindo
+                  </a>
+                </div>
+  
+            </div>
+                <p>Nome: {{ userprofile.user.first_name }} {{ userprofile.user.last_name }}</p>
+        </div>
+    </div>
+    <div *ngIf="logged_in && moderator && userprofile.user.is_active">
+        <div class="toggle-reports-btn" (click)="toggleReports()">
+            {{ showReports ? 'Esconder Denúncias' : 'Mostrar Denúncias' }}
+          </div>
+          
+          <!-- Reports Section -->
+          <div class="reports-container" [class.active]="showReports">
+            <app-report-list [reports]="reports"></app-report-list>
+          </div>
+    </div>
+    <hr/>
+
+    <app-report-modal *ngIf="userprofile.address"
+        [user]="true"
+        [target]="userprofile"
+        (reportSubmitted)="onReportSubmitted()"
+    ></app-report-modal>
+
+    <!-- Report Modal 
+    <div class="modal fade" id="reportModal" tabindex="-1" role="dialog" aria-labelledby="reportModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="reportModalLabel">Reportar {{ profile_user.username }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        {{ report_form.as_p }}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" name="report_user" class="btn btn-danger">Enviar Denúncia</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    -->
+    <div *ngIf="userprofile.user && (userprofile.user.is_active === undefined || userprofile.user.is_active === true); else banned">
+        <app-product-list *ngIf="userprofile.user.username" [username]="userprofile.user.username"></app-product-list>
+    </div>
+    
+    <ng-template #banned>
+        <div class="alert alert-danger" style="border: 2px solid darkred; background-color: #f8d7da; color: darkred; font-size: 2rem; text-align: center; padding: 20px;">
+            <strong>Este usuário foi banido!!!</strong>
+        </div>
+    </ng-template>
+    
+</div>
+
+<div class="modal fade" id="followersModal" tabindex="-1" aria-labelledby="followersModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="followersModalLabel">Seguidores</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <app-user-list *ngIf="followers && followers_number > 0" [simple_user]="followers" [perfil]="true"></app-user-list>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="followingModal" tabindex="-1" aria-labelledby="followingModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="followingModalLabel">A Seguir</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <app-user-list *ngIf="following && following_number > 0" [simple_user]="following" [perfil]="true"></app-user-list>
+            </div>
+        </div>
+    </div>
+</div>

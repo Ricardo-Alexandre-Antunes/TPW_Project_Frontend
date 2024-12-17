@@ -1,0 +1,21 @@
+<li class="list-group-item d-flex align-items-center" *ngIf="user">
+      <!-- Product Image -->
+      <img [src]="'http://127.0.0.1:8080' + user.image" class="profile-img rounded-circle mr-3" alt="{{ username }}" />
+  
+      <!-- Card Body -->
+      <div>
+        <a *ngIf="username && !perfil" [routerLink]="['/profile', username]" class="username">{{ username }}</a>
+        <a *ngIf="perfil" class="username_">{{ username }}</a>
+      </div>
+  </li>
+  
+  <!-- Loading Placeholder -->
+  <div *ngIf="!user" class="col-md-4 col-sm-6 mb-4">
+    <div class="card shadow-sm border-light">
+      <div class="card-body text-center">
+        <p class="loading-text">Loading user</p>
+      </div>
+    </div>
+  </div>
+  
+    
